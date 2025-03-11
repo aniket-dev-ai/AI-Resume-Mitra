@@ -29,6 +29,7 @@ export const createResume = async (req, res) => {
       experience,
     } = req.body;
 
+    console.log("Request Body:", req.body);
     if (!name || !phone || !email) {
       return res.status(400).json({ msg: "Candidate name, phone, and email are required." });
     }
@@ -50,6 +51,7 @@ export const createResume = async (req, res) => {
       certifications,
       experience,
     });
+    console.log("New Resume Object:", newResume);
 
     await newResume.save();
     console.log("✅ Resume created successfully");
@@ -63,16 +65,16 @@ export const createResume = async (req, res) => {
 // ✅ GET RESUME BY USER ID
 export const getResumeByUser = async (req, res) => {
   console.log("🔵 Get Resume API hit");
-
+  console.log("User ID:", req.userId);
   try {
-    const resume = await Resume.findOne({ user: req.params.userId });
+    const resume = await Resume.findOne({ user: req.userId });
 
     if (!resume) {
-      console.log(`⚠️ Resume not found for user: ${req.params.userId}`);
+      console.log(`⚠️ Resume not found for user: ${req.userId}`);
       return res.status(404).json({ msg: "Resume not found" });
     }
 
-    console.log(`✅ Resume fetched for user: ${req.params.userId}`);
+    console.log(`✅ Resume fetched for user: ${req.userId}`);
     res.json(resume);
   } catch (error) {
     logError("Failed to fetch resume", error);

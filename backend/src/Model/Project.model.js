@@ -21,6 +21,16 @@ const projectSchema = new mongoose.Schema(
       type: [String], 
       required: true,
     },
+    githubLink: {
+      type: String,
+      // required: [true, 'GitHub link is required'],
+      trim: true,
+    },
+    liveLink: {
+      type: String,
+      // required: [true, 'Live link is required'],
+      trim: true,
+    },
   },
   {
     timestamps: true, 

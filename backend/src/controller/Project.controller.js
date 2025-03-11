@@ -13,7 +13,8 @@ export const addProject = async (req, res) => {
 
   try {
     const { courseId } = req.params;
-    const { name, description, skills } = req.body;
+    console.log(`🔍 Course ID: ${courseId}`);
+    const { name, description, skills, githubLink, liveLink } = req.body;
     const userId = req.user.id;
 
     if (!mongoose.Types.ObjectId.isValid(courseId)) {
@@ -26,6 +27,8 @@ export const addProject = async (req, res) => {
       name,
       description,
       skills,
+      githubLink,
+      liveLink,
     });
 
     await newProject.save();
@@ -110,6 +113,27 @@ export const getProject = async (req, res) => {
     res.json(project);
   } catch (error) {
     logError("Failed to fetch project", error);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
+export const getAllProjects = async (req, res) => {
+  console.log("🔵 Get All Projects API hit");
+
+  try {
+    const projects = await Project.find(req.userId).populate(
+      "user",
+      "name email"
+    );
+    if (!projects) {
+      console.log(`⚠️ No projects found`);
+      return res.status(404).json({ msg: "No projects found" });
+    }
+
+    console.log(`✅ All projects fetched`);
+    res.json(projects);
+  } catch (error) {
+    logError("Failed to fetch all projects", error);
     res.status(500).json({ msg: "Server error" });
   }
 };

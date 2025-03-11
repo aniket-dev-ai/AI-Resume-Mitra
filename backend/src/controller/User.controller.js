@@ -186,3 +186,18 @@ export const getAllUsers = async (req, res) => {
     res.status(500).json({ msg: "Server error" });
   }
 };
+
+// ✅ LOGOUT USER
+export const logoutUser = async (req, res) => {
+  console.log("🔵 Logout API hit");
+
+  try {
+    res.clearCookie("token");
+    console.log("✅ User logged out successfully");
+
+    res.status(200).json({ msg: "Logout successful" });
+  } catch (error) {
+    logError("Failed to logout user", error);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
