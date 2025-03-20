@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const AI_API = "http://localhost:4000/api/ai";
+const AI_API = "https://ai-resume-mitra.onrender.com/api/ai";
 
 export const aiApi = createApi({
   reducerPath: "aiApi",

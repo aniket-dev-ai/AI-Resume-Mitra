@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { logoutUser } from "../Slices/authSlice";
+import { clearResume } from "../Slices/resumeSlice";
 
-const AUTH_API = "http://localhost:4000/api/users";
+const AUTH_API = "https://ai-resume-mitra.onrender.com/api/users";
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -39,6 +40,7 @@ export const authApi = createApi({
         try {
           await queryFulfilled;
           dispatch(logoutUser());
+          dispatch(clearResume());
         } catch (error) {
           console.error("Logout failed", error);
         }
