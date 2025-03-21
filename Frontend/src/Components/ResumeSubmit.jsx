@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { useCreateresumesMutation } from "../Features/Api/resumesApi";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setResume } from "../Features/Slices/resumeSlice";
+import { motion } from "framer-motion";
 
 const ResumeSubmit = () => {
   const haveResume = useSelector((state) => state.resume.resumeData);
   const navigate = useNavigate();
   useEffect(() => {
-    if (haveResume) {
-      navigate("/ShowResumePage");
-    }
+    if (haveResume) navigate("/ShowResumePage");
   }, [haveResume, navigate]);
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -29,8 +29,8 @@ const ResumeSubmit = () => {
     certifications: "",
     experience: "",
   });
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const [createresumes, { isLoading }] = useCreateresumesMutation();
 
   const handleChange = (e) => {
@@ -53,6 +53,7 @@ const ResumeSubmit = () => {
       await createresumes(resumeData);
       dispatch(setResume(resumeData));
       toast.success("Resume submitted successfully! 🚀");
+
       setFormData({
         name: "",
         phone: "",
@@ -69,6 +70,7 @@ const ResumeSubmit = () => {
         certifications: "",
         experience: "",
       });
+
       navigate("/ShowResumePage");
     } catch (error) {
       toast.error("Failed to submit resume 😢");
@@ -77,147 +79,108 @@ const ResumeSubmit = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-orange-600 to-yellow-500 p-6">
-      <div className="w-full max-w-3xl bg-white/10 backdrop-blur-md shadow-xl rounded-lg p-8 border border-yellow-300">
-        <h2 className="text-3xl font-bold text-center text-yellow-300 mb-6">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+      className="flex justify-center items-center min-h-screen bg-gradient-to-br from-purple-600 to-indigo-600 p-6"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+        className="w-full max-w-3xl bg-white/10 backdrop-blur-md shadow-2xl rounded-xl p-8 border border-gray-300"
+      >
+        <motion.h2
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
+          className="text-3xl font-extrabold text-center text-white mb-6"
+        >
           ✨ Submit Your Resume ✨
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Personal Info */}
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 border border-yellow-200 placeholder-white text-white focus:ring-2 focus:ring-yellow-300 outline-none"
-            required
-          />
-          <input
-            type="text"
-            name="phone"
-            placeholder="Phone Number"
-            value={formData.phone}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 border border-yellow-200 placeholder-white text-white focus:ring-2 focus:ring-yellow-300 outline-none"
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 border border-yellow-200 placeholder-white text-white focus:ring-2 focus:ring-yellow-300 outline-none"
-            required
-          />
-          <input
-            type="text"
-            name="linkedIn"
-            placeholder="LinkedIn Profile"
-            value={formData.linkedIn}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 border border-yellow-200 placeholder-white text-white focus:ring-2 focus:ring-yellow-300 outline-none"
-          />
-          <input
-            type="text"
-            name="github"
-            placeholder="GitHub Profile"
-            value={formData.github}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 border border-yellow-200 placeholder-white text-white focus:ring-2 focus:ring-yellow-300 outline-none"
-          />
+        </motion.h2>
 
-          {/* Education */}
-          <input
-            type="text"
-            name="schoolName"
-            placeholder="School Name"
-            value={formData.schoolName}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 border border-yellow-200 placeholder-white text-white focus:ring-2 focus:ring-yellow-300 outline-none"
-            required
-          />
-          <input
-            type="text"
-            name="schoolBoard"
-            placeholder="School Board"
-            value={formData.schoolBoard}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 border border-yellow-200 placeholder-white text-white focus:ring-2 focus:ring-yellow-300 outline-none"
-            required
-          />
-          <input
-            type="text"
-            name="degree"
-            placeholder="Degree"
-            value={formData.degree}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 border border-yellow-200 placeholder-white text-white focus:ring-2 focus:ring-yellow-300 outline-none"
-            required
-          />
-          <input
-            type="text"
-            name="collegeName"
-            placeholder="College Name"
-            value={formData.collegeName}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 border border-yellow-200 placeholder-white text-white focus:ring-2 focus:ring-yellow-300 outline-none"
-            required
-          />
+        <motion.form
+          onSubmit={handleSubmit}
+          className="space-y-6"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { delayChildren: 0.2, staggerChildren: 0.1 },
+            },
+          }}
+        >
+          {/* Mapping Inputs */}
+          {[
+            { name: "name", placeholder: "Full Name", required: true },
+            { name: "phone", placeholder: "Phone Number", required: true },
+            { name: "email", placeholder: "Email Address", required: true },
+            { name: "linkedIn", placeholder: "LinkedIn Profile" },
+            { name: "github", placeholder: "GitHub Profile" },
+            { name: "schoolName", placeholder: "School Name", required: true },
+            { name: "schoolBoard", placeholder: "School Board", required: true },
+            { name: "degree", placeholder: "Degree", required: true },
+            { name: "collegeName", placeholder: "College Name", required: true },
+          ].map(({ name, placeholder, required }) => (
+            <motion.input
+              key={name}
+              type="text"
+              name={name}
+              placeholder={placeholder}
+              value={formData[name]}
+              onChange={handleChange}
+              className="w-full p-3 rounded-lg bg-white/20 border border-gray-200 placeholder-white text-white focus:ring-2 focus:ring-indigo-300 outline-none"
+              required={required}
+              whileFocus={{ scale: 1.05, transition: { duration: 0.2 } }}
+            />
+          ))}
 
-          {/* Skills & Experience */}
-          <textarea
-            name="skills"
-            placeholder="Skills (comma separated)"
-            value={formData.skills}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 border border-yellow-200 placeholder-white text-white focus:ring-2 focus:ring-yellow-300 outline-none"
-            required
-          ></textarea>
-          <textarea
-            name="hobbies"
-            placeholder="Hobbies (comma separated)"
-            value={formData.hobbies}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 border border-yellow-200 placeholder-white text-white focus:ring-2 focus:ring-yellow-300 outline-none"
-          ></textarea>
-          <textarea
-            name="softSkills"
-            placeholder="Soft Skills (comma separated)"
-            value={formData.softSkills}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 border border-yellow-200 placeholder-white text-white focus:ring-2 focus:ring-yellow-300 outline-none"
-          ></textarea>
-          <textarea
-            name="certifications"
-            placeholder="Certifications (comma separated)"
-            value={formData.certifications}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 border border-yellow-200 placeholder-white text-white focus:ring-2 focus:ring-yellow-300 outline-none"
-          ></textarea>
-          <textarea
-            name="experience"
-            placeholder="Experience (optional)"
-            value={formData.experience}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 border border-yellow-200 placeholder-white text-white focus:ring-2 focus:ring-yellow-300 outline-none"
-          ></textarea>
+          {/* Textarea Inputs */}
+          {[
+            { name: "skills", placeholder: "Skills (comma separated)", required: true },
+            { name: "hobbies", placeholder: "Hobbies (comma separated)" },
+            { name: "softSkills", placeholder: "Soft Skills (comma separated)" },
+            { name: "certifications", placeholder: "Certifications (comma separated)" },
+            { name: "experience", placeholder: "Experience (optional)" },
+          ].map(({ name, placeholder, required }) => (
+            <motion.textarea
+              key={name}
+              name={name}
+              placeholder={placeholder}
+              value={formData[name]}
+              onChange={handleChange}
+              className="w-full p-3 rounded-lg bg-white/20 border border-gray-200 placeholder-white text-white focus:ring-2 focus:ring-indigo-300 outline-none"
+              required={required}
+              whileFocus={{ scale: 1.05, transition: { duration: 0.2 } }}
+            ></motion.textarea>
+          ))}
 
           {/* Submit Button */}
-
-          <button
+          <motion.button
             type="submit"
-            className="w-full bg-yellow-400 text-orange-900 py-3 rounded-lg font-bold text-lg hover:bg-yellow-500 transition-all"
+            className="w-full bg-indigo-500 text-white py-3 rounded-lg font-bold text-lg shadow-lg"
+            whileHover={{
+              scale: 1.1,
+              boxShadow: "0px 0px 15px rgba(255, 255, 255, 0.6)",
+              transition: { duration: 0.2 },
+            }}
+            whileTap={{ scale: 0.95 }}
+            animate={{
+              opacity: [0.7, 1, 0.7, 1],
+              scale: [1, 1.05, 1],
+              transition: { repeat: Infinity, duration: 2 },
+            }}
             disabled={isLoading}
           >
-            {isLoading
-              ? "Submitting..."
-              : "Submit Resume To Generate AI Response"}
-          </button>
-        </form>
-      </div>
-    </div>
+            {isLoading ? "Submitting..." : "🚀 Submit & Generate AI Resume"}
+          </motion.button>
+        </motion.form>
+      </motion.div>
+    </motion.div>
   );
 };
 
